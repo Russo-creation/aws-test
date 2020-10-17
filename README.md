@@ -7,3 +7,5 @@ This is a **simple** test for AWS tech stack
 - backend: node.js
 
 - database: MySql
+
+SSH test
