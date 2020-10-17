@@ -8,4 +8,3 @@ This is a **simple** test for AWS tech stack
 
 - database: MySql
 
-SSH test
