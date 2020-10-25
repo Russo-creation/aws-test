@@ -5,9 +5,9 @@ WORKDIR /app
 COPY . /app/ 
 
 # #prepare the contiainer for building react 
-RUN npm install --silent
-RUN npm install react-scripts@3.0.1 -g --silent 
-RUN npm run build 
+RUN npm install -g yarn
+RUN yarn install --network-timeout 1000000
+RUN yarn run build
 
 #prepare nginx
 FROM nginx:1.16.0-alpine
