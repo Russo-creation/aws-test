@@ -1,10 +1,9 @@
 ## AWS test
 
-This is a **simple** test for AWS tech stack
+This is a **simple** test for AWS docker tech stack
 
 - fontend: Nginx, React
 
-- backend: node.js
+- backend: Node.js, GraphQL
 
 - database: MySql
-
