@@ -7,3 +7,5 @@ This is a **simple** test for AWS docker tech stack
 - backend: Node.js, GraphQL
 
 - database: MySql
+
+deploy test
