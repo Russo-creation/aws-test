@@ -2,9 +2,9 @@ name: Deploy test
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   test-and-build:
@@ -18,3 +18,28 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '12.x'
+
+  deploy:
+    name: Push artifacts to EC2 instance
+    needs: test-and-build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: frontend
+          path: frontend
+
+      # Copy build folder content to EC2
+      - name: Copy public files to remote EC2 instance
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.REMOTE_PORT }}
+          rm: true
+          source: "frontend"
+          target: "${{ secrets.REMOTE_DIR }}"
