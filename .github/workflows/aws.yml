@@ -5,9 +5,15 @@ on:
     branches: [ master ]
 
 jobs:
-
+  test-and-build:
+    runs-on: ubuntu-latest
+    name: Test & Build Artifacts
+    steps:
+      - uses: actions/checkout@v2
+   
   deploy:
     name: Push artifacts to EC2 instance
+    needs: test-and-build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
