@@ -43,19 +43,20 @@ describe('image-snapshot', () => {
     try {
       await page.goto(`${process.env.REACT_APP_FRONTEND_URL}/`, { waitUntil: ['load', 'domcontentloaded', 'networkidle2'], timeout: 12000 });
 
-
-      //write to input id="myinput" value Hello
-      await page.type('#myinput', 'Hello');
-
-      //check if page title equals React App
-      //await expect(page.title()).resolves.toMatch('React App');
-
-      // await expect(page).toMatch('GraphQL');
-
-      // await page.reload({waitUntil: 'networkidle0'});
-      
-      //add timeout for something
       await page.evaluateHandle('document.fonts.ready').then(async() => {
+
+        //write to input id="myinput" value Hello
+        await page.type('#myinput', 'Hello');
+
+        //check if page title equals React App
+        //await expect(page.title()).resolves.toMatch('React App');
+
+        // await expect(page).toMatch('GraphQL');
+
+        // await page.reload({waitUntil: 'networkidle0'});
+        
+        //add timeout for something
+        // await page.waitForTimeout(1000).then(() => console.log('Waited a second!'));
 
         const bodyHeight = await page.evaluate(() => document.body.scrollHeight);
         await page.setViewport({ width: 300, height: bodyHeight });
@@ -74,10 +75,6 @@ describe('image-snapshot', () => {
         done();
 
       });
-
-      //await page.waitFor(4000);
-
-      
     } catch (err) {
       console.log(err);
     }
