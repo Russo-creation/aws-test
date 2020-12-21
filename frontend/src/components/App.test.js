@@ -16,6 +16,13 @@ import puppeteer from 'puppeteer';
 
 import {globalTestFunction} from "../../testGlobalFunctions"
 
+function sleep(millisecondsCount) {
+    if (!millisecondsCount) {
+        return;
+    }
+    return new Promise(resolve => setTimeout(resolve, millisecondsCount)).catch();
+}
+
 describe('image-snapshot', () => {
   globalTestFunction();
 
@@ -34,33 +41,40 @@ describe('image-snapshot', () => {
 
   it('visual regression test', async done => {
     try {
-      await page.goto(`${process.env.REACT_APP_FRONTEND_URL}/`, { waitUntil: 'load' });
+      await page.goto(`${process.env.REACT_APP_FRONTEND_URL}/`, { waitUntil: ['load', 'domcontentloaded', 'networkidle2'], timeout: 12000 });
 
-      //write to input id="myinput" value Hello
-      await page.type('#myinput', 'Hello');
+      await page.evaluateHandle('document.fonts.ready').then(async() => {
 
-      //check if page title equals React App
-      //await expect(page.title()).resolves.toMatch('React App');
+        //write to input id="myinput" value Hello
+        await page.type('#myinput', 'Hello');
 
-      // await expect(page).toMatch('GraphQL');
+        //check if page title equals React App
+        //await expect(page.title()).resolves.toMatch('React App');
 
-      // await page.reload({waitUntil: 'networkidle0'});
-      
-      //add timeout for something
-     // await page.waitForTimeout(1000).then(() => console.log('Waited a second!'));
+        // await expect(page).toMatch('GraphQL');
 
-      const image = await page.screenshot({
-        fullPage: true,
+        // await page.reload({waitUntil: 'networkidle0'});
+        
+        //add timeout for something
+        // await page.waitForTimeout(1000).then(() => console.log('Waited a second!'));
+
+        const bodyHeight = await page.evaluate(() => document.body.scrollHeight);
+        await page.setViewport({ width: 300, height: bodyHeight });
+  
+        const image = await page.screenshot({
+          //fullPage: true,
+        });
+        expect(image).toMatchImageSnapshot({
+          customSnapshotsDir: "./__image_snapshots__/",
+          customSnapshotIdentifier: 'customSnapshotName',
+          //  customDiffDir: "./__image_snapshots__/",
+          failureThreshold: 0.005,
+          failureThresholdType: 'percent'
+        });
+  
+        done();
+
       });
-      expect(image).toMatchImageSnapshot({
-        customSnapshotsDir: "./__image_snapshots__/",
-        customSnapshotIdentifier: 'customSnapshotName',
-        //  customDiffDir: "./__image_snapshots__/",
-        failureThreshold: 0.005,
-        failureThresholdType: 'percent'
-      });
-
-      done();
     } catch (err) {
       console.log(err);
     }
