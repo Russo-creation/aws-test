@@ -34,7 +34,7 @@ describe('image-snapshot', () => {
 
   it('visual regression test', async done => {
     try {
-      await page.goto(`${process.env.REACT_APP_FRONTEND_URL}/`, { waitUntil: 'load' });
+      await page.goto(`${process.env.REACT_APP_FRONTEND_URL}/`, { waitUntil: 'networkidle2', timeout: 10000 });
 
       //write to input id="myinput" value Hello
       await page.type('#myinput', 'Hello');
@@ -49,8 +49,12 @@ describe('image-snapshot', () => {
       //add timeout for something
      // await page.waitForTimeout(1000).then(() => console.log('Waited a second!'));
 
+     
+      const bodyHeight = await page.evaluate(() => document.body.scrollHeight);
+      await page.setViewport({ width: 300, height: bodyHeight });
+
       const image = await page.screenshot({
-        fullPage: true,
+        //fullPage: true,
       });
       expect(image).toMatchImageSnapshot({
         customSnapshotsDir: "./__image_snapshots__/",
