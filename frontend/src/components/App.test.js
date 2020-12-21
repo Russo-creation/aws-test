@@ -16,6 +16,13 @@ import puppeteer from 'puppeteer';
 
 import {globalTestFunction} from "../../testGlobalFunctions"
 
+function sleep(millisecondsCount) {
+    if (!millisecondsCount) {
+        return;
+    }
+    return new Promise(resolve => setTimeout(resolve, millisecondsCount)).catch();
+}
+
 describe('image-snapshot', () => {
   globalTestFunction();
 
@@ -34,7 +41,8 @@ describe('image-snapshot', () => {
 
   it('visual regression test', async done => {
     try {
-      await page.goto(`${process.env.REACT_APP_FRONTEND_URL}/`, { waitUntil: 'networkidle2', timeout: 10000 });
+      await page.goto(`${process.env.REACT_APP_FRONTEND_URL}/`, { waitUntil: ['load', 'domcontentloaded', 'networkidle2'], timeout: 12000 });
+
 
       //write to input id="myinput" value Hello
       await page.type('#myinput', 'Hello');
@@ -47,24 +55,29 @@ describe('image-snapshot', () => {
       // await page.reload({waitUntil: 'networkidle0'});
       
       //add timeout for something
-     // await page.waitForTimeout(1000).then(() => console.log('Waited a second!'));
+      await page.evaluateHandle('document.fonts.ready').then(async() => {
 
-     
-      const bodyHeight = await page.evaluate(() => document.body.scrollHeight);
-      await page.setViewport({ width: 300, height: bodyHeight });
+        const bodyHeight = await page.evaluate(() => document.body.scrollHeight);
+        await page.setViewport({ width: 300, height: bodyHeight });
+  
+        const image = await page.screenshot({
+          //fullPage: true,
+        });
+        expect(image).toMatchImageSnapshot({
+          customSnapshotsDir: "./__image_snapshots__/",
+          customSnapshotIdentifier: 'customSnapshotName',
+          //  customDiffDir: "./__image_snapshots__/",
+          failureThreshold: 0.005,
+          failureThresholdType: 'percent'
+        });
+  
+        done();
 
-      const image = await page.screenshot({
-        //fullPage: true,
       });
-      expect(image).toMatchImageSnapshot({
-        customSnapshotsDir: "./__image_snapshots__/",
-        customSnapshotIdentifier: 'customSnapshotName',
-        //  customDiffDir: "./__image_snapshots__/",
-        failureThreshold: 0.005,
-        failureThresholdType: 'percent'
-      });
 
-      done();
+      //await page.waitFor(4000);
+
+      
     } catch (err) {
       console.log(err);
     }
