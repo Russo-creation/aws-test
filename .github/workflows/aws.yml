@@ -33,3 +33,6 @@ jobs:
         port: ${{ secrets.REMOTE_PORT }}
         script: |
           cp /home/ubuntu/file_test_script.txt /home/ubuntu/test/
+          docker-compose -f /home/ubuntu/test/docker-compose.test.yml up -d --build --force-recreate
+          yarn --cwd /home/ubuntu/test/frontend/ install
+          yarn --cwd /home/ubuntu/test/frontend/ run test_tests
