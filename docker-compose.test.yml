@@ -4,6 +4,7 @@ services:
   database_mysql_tests:
     container_name: database_mysql_tests
     build: ./database
+    env_file: /home/ubuntu/test/.env
     environment:
       MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
       MYSQL_DATABASE: "${MYSQL_DATABASE_NAME}"
@@ -37,7 +38,7 @@ services:
       args:
       - REACT_APP_API_URL= ${API_URL_TESTS}
       - REACT_APP_FRONTEND_URL= ${FRONTEND_URL_TESTS}
-    env_file: .env
+    env_file: ./.env
     ports:
       - "80:80"
       - "4012:9090"

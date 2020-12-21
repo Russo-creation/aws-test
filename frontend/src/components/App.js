@@ -43,7 +43,6 @@ console.log(process.env.REACT_APP_API_URL);
   return (
     <ApolloProvider client={client}>
       <div className="Wrapper">
-        test
         <header className="App-header">Docker stack test (AWS deployment)</header>
         <div className="section">-Frontend-</div>
         <FrontendStatus />
