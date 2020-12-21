@@ -9,8 +9,16 @@
     "apollo-cache-inmemory": "^1.6.6",
     "apollo-client": "^2.6.10",
     "apollo-link-http": "^1.5.17",
+    "cross-env": "^7.0.3",
+    "cross-fetch": "^3.0.6",
+    "dotenv": "^8.2.0",
     "graphql": "^15.3.0",
     "graphql-tag": "^2.11.0",
+    "jest-image-snapshot": "^4.2.0",
+    "jest-transform-css": "^2.1.0",
+    "jest-transform-file": "^1.1.1",
+    "jsdom-screenshot": "^4.0.0",
+    "puppeteer": "^5.5.0",
     "react": "^16.13.1",
     "react-apollo": "^3.1.5",
     "react-dom": "^16.13.1",
@@ -20,7 +28,12 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "REACT_APP_FRONTEND_URL=http://localhost:3000 jest",
+    "test_local": "REACT_APP_FRONTEND_URL=http://localhost jest",
+    "test_dev": "REACT_APP_FRONTEND_URL=http://18.157.75.206 jest",
+    "test_prod": "REACT_APP_FRONTEND_URL=http://18.157.75.206 jest",
+    "test_tests": "REACT_APP_FRONTEND_URL=http://18.157.75.206 jest",
+    "test:watch": "jest --watchAll",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -37,5 +50,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "jest-puppeteer": "^4.4.0"
   }
 }

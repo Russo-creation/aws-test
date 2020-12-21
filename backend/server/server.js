@@ -6,6 +6,11 @@ const mysql = require("mysql");
 const schema = require("./schema/schema");
 
 var app = express();
+
+// var corsOptions = {
+//   origin: "http://localhost:8081"
+// };
+// app.use(cors(corsOptions));
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -27,7 +32,7 @@ app.use(
 //server setting for MySql connection
 
 var connection_mysql = mysql.createPool({
-  host: "database_mysql",
+  host: process.env.NODE_DATABASE_HOST || "127.0.0.1:3306",
   user: "user",
   password: "password",
   database: "mysql_test",

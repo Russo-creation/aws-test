@@ -2,11 +2,5 @@ FROM mysql:5.7.24
 
 #CMD --default-authentication-plugin=mysql_native_password
 
-
-ENV MYSQL_PASSWORD="password"
-ENV MYSQL_ROOT_PASSWORD="password"
-ENV MYSQL_DATABASE="mysql_test"
-ENV MYSQL_USER="user"
-
 ADD script.sql /docker-entrypoint-initdb.d
 EXPOSE 3306

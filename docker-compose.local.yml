@@ -1,0 +1,81 @@
+version: "3.8"
+services:
+  # Database
+  database_mysql_local:
+    container_name: database_mysql_local
+    build: ./database
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: mysql_test
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    restart: always
+    networks:
+      - backend_local
+    volumes:
+      - data-volume_local:/var/lib/mysql
+
+  # phpmyadmin 
+  phpmyadmin_local:
+    depends_on:
+      - database_mysql_local
+    build: ./config/phpmyadmin
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOSTS: database_mysql_local,18.157.75.206
+      PMA_PORTS: 3306,3306
+      MYSQL_ROOT_PASSWORD: password
+      UPLOAD_LIMIT: 512M
+    networks:
+      - backend_local
+
+  # Backend
+  backend_node_local:
+    build: ./backend
+    restart: always
+    environment: 
+      - NODE_DATABASE_HOST=database_mysql_local
+    ports:
+      - "4008:4008"
+    networks:
+      - backend_local
+      - frontend_local
+    depends_on:
+      - database_mysql_local
+
+  # Frontend
+  frontend_react_local:
+    build: 
+      context: ./frontend
+      args:
+      - REACT_APP_API_URL= http://localhost:4008
+      - REACT_APP_FRONTEND_URL= http://localhost
+    ports:
+      - "80:80"
+      - "4012:9090"
+    networks:
+      - frontend_local
+    depends_on:
+      - backend_node_local
+
+  # Pagecache
+  pagecache_local:
+    image: memcached
+    ports:
+      - "11211:11211"
+    command: -m 64
+    networks:
+      - frontend_local
+
+# Names for networks
+networks:
+  backend_local:
+    driver: bridge
+  frontend_local:
+    driver: bridge
+
+# Names for volumes
+volumes:
+  data-volume_local:

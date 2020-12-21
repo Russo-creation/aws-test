@@ -1,0 +1,6 @@
+FROM phpmyadmin/phpmyadmin
+
+RUN echo "\$cfg['ExecTimeLimit'] = 0;" >> /etc/phpmyadmin/config.inc.php
+
+EXPOSE 80
+

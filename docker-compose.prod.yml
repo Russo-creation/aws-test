@@ -1,0 +1,67 @@
+version: "3.8"
+services:
+  # Database
+  database_mysql_prod:
+    container_name: database_mysql_prod
+    build: ./database
+    environment:
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+      MYSQL_DATABASE: "${MYSQL_DATABASE_NAME}"
+      MYSQL_USER: "${MYSQL_USER}"
+      MYSQL_PASSWORD: "${MYSQL_USER_PASSWORD}"
+    restart: always
+    networks:
+      - backend_prod
+    volumes:
+      - data-volume_prod:/var/lib/mysql
+
+  # Backend
+  backend_node_prod:
+    build: ./backend
+    restart: always
+    environment: 
+      - NODE_DATABASE_HOST=database_mysql_prod
+    restart: always
+    ports:
+      - "4008:4008"
+    networks:
+      - backend_prod
+      - frontend_prod
+    depends_on:
+      - database_mysql_prod
+
+  # Frontend
+  frontend_react_prod:
+    build: 
+      context: ./frontend
+      args:
+      - REACT_APP_API_URL= ${API_URL_PROD}
+      - REACT_APP_FRONTEND_URL= ${FRONTEND_URL_PROD}
+    env_file: .env
+    ports:
+      - "80:80"
+      - "4012:9090"
+    networks:
+      - frontend_prod
+    depends_on:
+      - backend_node_prod
+
+  # Pagecache
+  pagecache_prod:
+    image: memcached
+    ports:
+      - "11211:11211"
+    command: -m 64
+    networks:
+      - frontend_prod
+
+# Names for networks
+networks:
+  backend_prod:
+    driver: bridge
+  frontend_prod:
+    driver: bridge
+
+# Names for volumes
+volumes:
+  data-volume_prod:
