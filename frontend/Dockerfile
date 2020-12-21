@@ -4,9 +4,19 @@ WORKDIR /app
 #copy the react app to the container
 COPY . /app/ 
 
-# #prepare the contiainer for building react 
+#prepare the contiainer 
+#install package manager- yarn
 RUN npm install -g yarn
 RUN yarn install --network-timeout 1000000
+
+#add environment variables
+ARG REACT_APP_API_URL
+ENV REACT_APP_API_URL $REACT_APP_API_URL
+
+ARG REACT_APP_FRONTEND_URL
+ENV REACT_APP_FRONTEND_URL $REACT_APP_FRONTEND_URL
+
+#build production version of website
 RUN yarn run build
 
 #prepare nginx

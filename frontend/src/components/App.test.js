@@ -34,7 +34,7 @@ describe('image-snapshot', () => {
 
   it('visual regression test', async done => {
     try {
-      await page.goto(`${process.env.REACT_APP_LOCAL_URL}/`, { waitUntil: 'load' });
+      await page.goto(`${process.env.REACT_APP_FRONTEND_URL}/`, { waitUntil: 'load' });
 
       //write to input id="myinput" value Hello
       await page.type('#myinput', 'Hello');

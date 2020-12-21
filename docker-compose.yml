@@ -7,8 +7,8 @@ services:
     restart: always
     networks:
       - backend
-    ports:
-      - "3306"
+#    ports:
+#      - "3306"
     volumes:
       - data-volume:/var/lib/mysql
   # Backend
@@ -23,7 +23,10 @@ services:
       - database_mysql
   # Frontend
   frontend_react:
-    build: ./frontend
+    build: 
+      context: ./frontend
+      args:
+      -  REACT_APP_API_URL= ${IP_ADDRESS}
     ports:
       - "80:80"
       - "4012:9090"
