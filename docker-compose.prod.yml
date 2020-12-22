@@ -19,6 +19,8 @@ services:
   backend_node_prod:
     build: ./backend
     restart: always
+    volumes:
+      - ./backend/uploads:/usr/src/app/uploads
     environment: 
       - NODE_DATABASE_HOST=database_mysql_prod
     restart: always

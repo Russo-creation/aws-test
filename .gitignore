@@ -28,6 +28,9 @@ yarn-error.log*
 # dependencies
 /backend/node_modules
 
+#uploads storing all files for 
+/backend/uploads
+
 # script
 ssh-agent
 

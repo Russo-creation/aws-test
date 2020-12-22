@@ -1,4 +1,4 @@
-FROM node:12.2.0-alpine as react_build 
+FROM node:14.15.3-alpine3.10 as react_build 
 #also say 
 WORKDIR /app
 #copy the react app to the container
@@ -6,7 +6,7 @@ COPY . /app/
 
 #prepare the contiainer 
 #install package manager- yarn
-RUN npm install -g yarn
+#RUN npm install -g yarn
 RUN yarn install --network-timeout 1000000
 
 #add environment variables
@@ -20,7 +20,7 @@ ENV REACT_APP_FRONTEND_URL $REACT_APP_FRONTEND_URL
 RUN yarn run build
 
 #prepare nginx
-FROM nginx:1.16.0-alpine
+FROM nginx:1.19.5-alpine
 
 COPY --from=react_build /app/build /usr/share/nginx/html
 RUN rm /etc/nginx/conf.d/default.conf
