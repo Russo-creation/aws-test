@@ -7,6 +7,7 @@
 
 # testing
 /frontend/coverage
+/__image_snapshots__/__diff_output__
 
 # production
 /frontend/build
@@ -25,9 +26,18 @@ yarn-error.log*
 #backend
 
 # dependencies
-
 /backend/node_modules
 
 # script
-
 ssh-agent
+
+#packet managers
+/frontend/yarn.lock
+/frontend/package-lock.json
+/backend/yarn.lock
+/backend/package-lock.json
+
+#secure environments uncomment in project!
+#.env
+#/frontend/dev.env
+#/frontend/prod.env

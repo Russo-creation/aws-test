@@ -1,4 +1,4 @@
-require('dotenv').config(); 
+require('dotenv').config({ path: './'+process.env.ENV_PATH }); 
 
 module.exports = {
   verbose: true,
