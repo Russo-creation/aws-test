@@ -8,13 +8,15 @@ on:
 
 jobs:
    
-# deploy whole folder on server   
+  # deploy repo on server and run bacic scripts
   deploy:
     name: Deploy dev
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-    - name: copy file via ssh key
+
+    # force build docker,
+    - name: copy repo via ssh key
       uses: appleboy/scp-action@master
       with:
         host: ${{ secrets.REMOTE_HOST }}
@@ -25,7 +27,7 @@ jobs:
         source: "*"
         target: "${{ secrets.REMOTE_DIR }}"
 
-# force build docker, run install dependencies and run E2E tests
+    # force build docker, run install dependencies and run E2E tests
     - name: Rebuild docker and run E2E tests
       uses: appleboy/ssh-action@master
       with:
@@ -36,5 +38,23 @@ jobs:
         script: |
           cp /home/ubuntu/file_test_script.txt /home/ubuntu/test/
           cd /home/ubuntu/test/ && docker-compose -f docker-compose.dev.yml up -d --build --force-recreate
+  
+  # prepere for E2E test and run tests
+  E2E-tests:
+    name: E2E tests
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      # install dependencies and run E2E tests
+      - name: run E2E tests
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.REMOTE_HOST }}
+        username: ${{ secrets.REMOTE_USER }}
+        key: ${{ secrets.SSH_KEY }}
+        port: ${{ secrets.REMOTE_PORT }}
+        script: |
           yarn --cwd /home/ubuntu/test/frontend/ install
           yarn --cwd /home/ubuntu/test/frontend/ run test_tests
