@@ -14,5 +14,3 @@ COPY . /usr/src/app
 
 EXPOSE 4008
 CMD ["yarn", "start"]
-
-

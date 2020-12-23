@@ -1,0 +1,45 @@
+version: "3.8"
+services:
+  # Database
+  database_mysql_local:
+    container_name: database_mysql_local
+    build: ./database
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: mysql_local
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3307:3306"
+    restart: always
+    networks:
+     - backend_local
+    volumes:
+      - data-volume_local:/var/lib/mysql
+
+  # phpmyadmin 
+  phpmyadmin_local:
+    depends_on:
+      - database_mysql_local
+    build: ./phpmyadmin
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOSTS: database_mysql_local,18.157.75.206,18.157.75.206
+      PMA_PORTS: 3306,3306,3306
+      MYSQL_ROOT_PASSWORD: password
+      UPLOAD_LIMIT: 512M
+    networks:
+      - backend_local
+    links: 
+      - database_mysql_local
+
+# Names for networks
+networks:
+  backend_local:
+    driver: bridge
+
+# Names for volumes
+volumes:
+  data-volume_local:

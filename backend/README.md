@@ -1,5 +1,4 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
+# Backend
 
 ## 1. Way for developing (recommended)
 
@@ -35,31 +34,3 @@ In this method you are not able to make changes on fly in dependency (installing
 docker-compose -f docker-compose.local.yml up -d
 ```
 2. Check if website is running at [localhost](http://localhost)
-
-# E2E TESTS
-Depends of environment that you are running service you can test it through:
-
-
-* docker-compose.yml
-```
-yarn run test_local
-```
-
-* docker-compose.local.yml
-```
-yarn run test_local
-```
-
-* docker-compose.dev.yml
-```
-yarn run test_dev
-```
-
-* docker-compose.prod.yml
-```
-yarn run test_prod
-```
-
-Images from testing are stored in directory `../__image_snapshots__`
-
-To replace reference image with new one just remove reference image and run tests again

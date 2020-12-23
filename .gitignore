@@ -28,10 +28,7 @@ yarn-error.log*
 # dependencies
 /backend/node_modules
 
-#uploads storing all files for 
-/backend/uploads
-
-# script
+# script 
 ssh-agent
 
 #packet managers
@@ -40,7 +37,14 @@ ssh-agent
 /backend/yarn.lock
 /backend/package-lock.json
 
-#secure environments uncomment in project!
-#.env
+
+# ------------ uploads folder not supposed to be sored in repo. uncomment line below!!! ------------
+
+#/backend/uploads
+
+# ------------ secure elements (env, htpasswd) uncomment lines below and keep files safe!!! ------------
+
+#docker.env
 #/frontend/dev.env
 #/frontend/prod.env
+#/frontend/nginx/auth/.htpasswd

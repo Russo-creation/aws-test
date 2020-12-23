@@ -14,7 +14,7 @@
 
 import puppeteer from 'puppeteer';
 
-import {globalTestFunction} from "../../testGlobalFunctions"
+import {globalTestFunction} from "../../jest/testGlobalFunctions"
 
 async function applayHtpasswdCredenctials(page, user, pass){
   const auth = Buffer(`${user}:${pass}`).toString('base64');
@@ -67,7 +67,7 @@ describe('image-snapshot', () => {
         await page.setViewport({ width: 300, height: bodyHeight });
   
         const image = await page.screenshot({
-          fullPage: true,
+        //  fullPage: true,
         });
         expect(image).toMatchImageSnapshot({
           customSnapshotsDir: "../__image_snapshots__/",

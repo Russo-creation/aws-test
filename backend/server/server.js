@@ -10,7 +10,7 @@ var app = express();
 // var corsOptions = {
 //   origin: "http://localhost:8081"
 // };
-// app.use(cors(corsOptions));
+// app.use(cors(corsOptions)); 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -31,13 +31,15 @@ app.use(
 
 //server setting for MySql connection
 
+ 
 var connection_mysql = mysql.createPool({
-  host: process.env.NODE_DATABASE_HOST || "127.0.0.1:3306",
-  user: "user",
-  password: "password",
-  database: "mysql_test",
+  host: process.env.NODE_DATABASE_HOST || "localhost",
+  port: process.env.NODE_DATABASE_PORT ? "" : 3307,
+  user: process.env.NODE_DATABASE_USER || "root",
+  password: process.env.NODE_DATABASE_PASS || "password",
+  database: process.env.NODE_DATABASE_DBNAME || "mysql_local", 
 });
-
+  
 //server entry point MySql
 app.get("/mysqlstatus", (req, res) => {
   connection_mysql.getConnection(function (err, connection) {

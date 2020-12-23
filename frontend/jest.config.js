@@ -3,7 +3,7 @@ require('dotenv').config({ path: './'+process.env.ENV_PATH });
 module.exports = {
   verbose: true,
   preset: 'jest-puppeteer',
-  setupFilesAfterEnv: ['./setupTests.js'],
+  setupFilesAfterEnv: ['./jest/setupTests.js'],
   transform: {
     '^.+\\.js$': 'babel-jest',
     '^.+\\.css$': 'jest-transform-css',
