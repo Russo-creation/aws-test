@@ -28,9 +28,9 @@ services:
     environment: 
       - NODE_DATABASE_HOST=database_mysql_dev
       - NODE_DATABASE_PORT=3306
-      - NODE_DATABASE_USER="${MYSQL_USER}"
-      - NODE_DATABASE_PASS="${MYSQL_USER_PASSWORD}"
-      - NODE_DATABASE_DBNAME="${MYSQL_DATABASE_NAME}"
+      - NODE_DATABASE_USER=${MYSQL_USER}
+      - NODE_DATABASE_PASS=${MYSQL_USER_PASSWORD}
+      - NODE_DATABASE_DBNAME=${MYSQL_DATABASE_NAME}
     restart: always
     ports:
       - "4008:4008"
@@ -50,7 +50,7 @@ services:
       - REACT_APP_FRONTEND_URL= ${FRONTEND_URL_DEV}
     ports:
       - "80:80"
-      - "443:443"
+      - "4012:9090"
     networks:
       - frontend_dev
     depends_on:

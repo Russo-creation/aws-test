@@ -17,7 +17,7 @@ import puppeteer from 'puppeteer';
 import {globalTestFunction} from "../../jest/testGlobalFunctions"
 
 async function applayHtpasswdCredenctials(page, user, pass){
-  const auth = Buffer(`${user}:${pass}`).toString('base64');
+  const auth = Buffer.from(`${user}:${pass}`).toString('base64');
   await page.setExtraHTTPHeaders({
     'Authorization': `Basic ${auth}`                    
   });
