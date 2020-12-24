@@ -1,8 +1,6 @@
-# Frontend
-
 # Template for docker, deploy and E2E tests
 
-Tech stack
+Tech stack:
 - fontend: Nginx, React (CRA boilerplate, E2E jest tests with puppeteer)
 
 - backend: Node.js (Express), GraphQL
@@ -48,3 +46,6 @@ docker-compose -f docker-compose.local.yml up -d
 docker-compose up -d
 ```
 More info about how to run particular service you can find in `./frontend/README.md` and `./backend/README.md`
+
+# 
+Store your backend files in `./backend/uploads/data/` directory

@@ -25,7 +25,7 @@ jobs:
         port: ${{ secrets.REMOTE_PORT }}
         rm: true
         source: "*"
-        target: "${{ secrets.REMOTE_DIR }}"
+        target: /home/ubuntu/website/www/
 
     # force build docker, run install dependencies and run E2E tests
     - name: Rebuild docker and run E2E tests
@@ -36,8 +36,12 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         port: ${{ secrets.REMOTE_PORT }}
         script: |
-          cp /home/ubuntu/file_test_script.txt /home/ubuntu/test/
-          cd /home/ubuntu/test/ && docker-compose -f docker-compose.dev.yml up -d --build --force-recreate
+#          ln -s /home/ubuntu/website/secure/.env /home/ubuntu/website/www/
+#          ln -s /home/ubuntu/website/secure/frontend/dev.env /home/ubuntu/website/www/frontend/
+#          ln -s /home/ubuntu/website/secure/frontend/prod.env /home/ubuntu/website/www/frontend/
+#          ln -s /home/ubuntu/website/secure/frontend/nginx/auth/.htpasswd /home/ubuntu/website/www/frontend/nginx/auth/
+#          ln -s /home/ubuntu/website/data /home/ubuntu/website/www/backend/uploads/
+          cd /home/ubuntu/website/www/ && docker-compose -f docker-compose.dev.yml up -d --build --force-recreate
   
   # prepere for E2E test and run tests
   E2E-tests:
@@ -47,7 +51,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      # install dependencies and run E2E tests
+      # install required dependencies and run E2E tests
       - name: run E2E tests
       uses: appleboy/ssh-action@master
       with:
@@ -56,5 +60,5 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         port: ${{ secrets.REMOTE_PORT }}
         script: |
-          yarn --cwd /home/ubuntu/test/frontend/ install
-          yarn --cwd /home/ubuntu/test/frontend/ run test_tests
+          yarn --cwd /home/ubuntu/website/www/frontend/ install
+          yarn --cwd /home/ubuntu/website/www/frontend/ run test_dev
