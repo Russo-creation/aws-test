@@ -53,12 +53,12 @@ jobs:
 
       # install required dependencies and run E2E tests
       - name: run E2E tests
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.REMOTE_HOST }}
-        username: ${{ secrets.REMOTE_USER }}
-        key: ${{ secrets.SSH_KEY }}
-        port: ${{ secrets.REMOTE_PORT }}
-        script: |
-          yarn --cwd /home/ubuntu/website/www/frontend/ install
-          yarn --cwd /home/ubuntu/website/www/frontend/ run test_dev
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.REMOTE_PORT }}
+          script: |
+            yarn --cwd /home/ubuntu/website/www/frontend/ install
+            yarn --cwd /home/ubuntu/website/www/frontend/ run test_dev
