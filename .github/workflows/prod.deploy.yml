@@ -1,14 +1,14 @@
-name: Deploy dev and run E2E tests
+name: Deploy prod
 
 on:
-  pull_request:
-    branches: [ dev ]
+  push:
+    branches: [ main ]
 
 jobs:
    
   # deploy repo on server and run basic scripts
   deploy:
-    name: Deploy dev
+    name: Deploy prod
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
@@ -39,24 +39,4 @@ jobs:
 #          ln -s /home/ubuntu/website/secure/frontend/prod.env /home/ubuntu/website/www/frontend/
 #          ln -s /home/ubuntu/website/secure/frontend/nginx/auth/.htpasswd /home/ubuntu/website/www/frontend/nginx/auth/
 #          ln -s /home/ubuntu/website/data /home/ubuntu/website/www/backend/uploads/
-          cd /home/ubuntu/website/www/ && docker-compose -f docker-compose.dev.yml up -d --build --force-recreate
-  
-  # prepere for E2E test and run tests
-  E2E-tests:
-    name: E2E tests
-    needs: deploy
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-
-      # install required dependencies and run E2E tests
-      - name: run E2E tests
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.REMOTE_HOST }}
-        username: ${{ secrets.REMOTE_USER }}
-        key: ${{ secrets.SSH_KEY }}
-        port: ${{ secrets.REMOTE_PORT }}
-        script: |
-          yarn --cwd /home/ubuntu/website/www/frontend/ install
-          yarn --cwd /home/ubuntu/website/www/frontend/ run test_dev
+          cd /home/ubuntu/website/www/ && docker-compose -f docker-compose.prod.yml up -d --build --force-recreate
