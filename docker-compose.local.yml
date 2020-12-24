@@ -57,15 +57,21 @@ services:
 
   # Frontend
   frontend_react_local:
+    stdin_open: true
     build: 
       context: ./frontend
       dockerfile: ./docker/local.Dockerfile
       args:
       - REACT_APP_API_URL= http://localhost:4008
       - REACT_APP_FRONTEND_URL= http://localhost
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
     ports:
-      - "80:80"
-      - "4012:9090"
+# uncomment below if you want run through Nginx- check also ./frontend/docker/local.Dockerfile
+#      - "80:80"
+# uncomment below if you want run without Nginx (development frendly)- check also ./frontend/docker/local.Dockerfile
+      - "80:3000"
     networks:
       - frontend_local
     depends_on:

@@ -50,7 +50,7 @@ services:
       - REACT_APP_FRONTEND_URL= ${FRONTEND_URL_DEV}
     ports:
       - "80:80"
-      - "4012:9090"
+      - "443:443"
     networks:
       - frontend_dev
     depends_on:

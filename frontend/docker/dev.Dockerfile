@@ -28,5 +28,5 @@ COPY nginx/dev/nginx.conf /etc/nginx/conf.d
 COPY nginx/auth/.htpasswd /etc/nginx/htpasswd/.htpasswd
 
 #fire up nginx
-EXPOSE 80 
+EXPOSE 80 443
 CMD ["nginx","-g","daemon off;"]

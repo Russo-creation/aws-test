@@ -30,7 +30,7 @@ yarn start
 
 
 ## 2. Way for developing (for small improvments)
-In this method you are not able to make changes on fly in dependency (installing additional libraries to package.json) on **backend**, if you want to see changes in dependency then you will have to **rebuild docker**
+In this method you are not able to make changes on fly in dependency (installing additional libraries to package.json) on **backend** and **frontend**, if you want to see changes in dependency then you will have to **rebuild docker**
 
 1. Go to main directory and run
 ```
@@ -65,3 +65,9 @@ yarn run test_prod
 Images from testing are stored in directory `../__image_snapshots__`
 
 To replace reference image with new one just remove reference image and run tests again
+
+## Hint
+Make sure you have installed web browser (eg. Chromium) on machine that you want to run E2E tests 
+```
+sudo apt-get install chromium-browser
+```
