@@ -34,12 +34,14 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         port: ${{ secrets.REMOTE_PORT }}
         script: |
+          cd /home/ubuntu/website/www/ && docker-compose -f docker-compose.dev.yml up -d --build --force-recreate
+
+# add below before rebuilding docker-container
 #          ln -s /home/ubuntu/website/secure/.env /home/ubuntu/website/www/
 #          ln -s /home/ubuntu/website/secure/frontend/dev.env /home/ubuntu/website/www/frontend/
 #          ln -s /home/ubuntu/website/secure/frontend/prod.env /home/ubuntu/website/www/frontend/
 #          ln -s /home/ubuntu/website/secure/frontend/nginx/auth/.htpasswd /home/ubuntu/website/www/frontend/nginx/auth/
 #          ln -s /home/ubuntu/website/data /home/ubuntu/website/www/backend/uploads/
-          cd /home/ubuntu/website/www/ && docker-compose -f docker-compose.dev.yml up -d --build --force-recreate
   
   # prepere for E2E test and run tests
   E2E-tests:
