@@ -53,7 +53,7 @@ describe('image-snapshot', () => {
       await page.type('#myinput', 'Hello');
 
       //fix issue with non loading font in .htpasswd server
-      await page.evaluate(() => { document.body.style.fontFamily = 'sans-serif'; }); 
+//      await page.evaluate(() => { document.body.style.fontFamily = 'Dejavu Sans'; }); 
 
       await page.evaluateHandle('document.fonts.ready').then(async() => {
         //check if page title equals React App
