@@ -45,13 +45,13 @@ jobs:
 
   # Clearing unused docker iamges after rebuilding
   Clear-Docker-Images:
-    name: E2E tests
+    name: Clear docker images
     needs: deploy
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 
-      # install required dependencies and run E2E tests
+      # run removing script
       - name: Clearing docker script
         uses: appleboy/ssh-action@master
         with:
