@@ -11,10 +11,11 @@ module.exports = {
     //hidden browser
     headless: process.env.HEADLESS !== 'false',
   },
+  browser: 'chromium',
   browserContext: process.env.INCOGNITO ? 'incognito' : 'default',
   server: {
     command: `cross-env PORT=${port} node server`,
     port,
-    launchTimeout: 4000,
+    launchTimeout: 8000,
   },
 }

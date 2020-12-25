@@ -1,0 +1,63 @@
+name: Deploy prod
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+   
+  # deploy repo on server and run basic scripts
+  deploy:
+    name: Deploy prod
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+
+    # force build docker,
+    - name: copy repo via ssh key
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.REMOTE_HOST }}
+        username: ${{ secrets.REMOTE_USER }}
+        key: ${{ secrets.SSH_KEY }}
+        port: ${{ secrets.REMOTE_PORT }}
+        rm: true
+        source: "*"
+        target: /home/ubuntu/website/www/
+
+    # force build docker, run install dependencies and run E2E tests
+    - name: Rebuild docker and run E2E tests
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.REMOTE_HOST }}
+        username: ${{ secrets.REMOTE_USER }}
+        key: ${{ secrets.SSH_KEY }}
+        port: ${{ secrets.REMOTE_PORT }}
+        script: |
+          cd /home/ubuntu/website/www/ && docker-compose -f docker-compose.prod.yml up -d --build --force-recreate
+
+# add below before rebuilding docker-container
+#          ln -s /home/ubuntu/website/secure/.env /home/ubuntu/website/www/
+#          ln -s /home/ubuntu/website/secure/frontend/dev.env /home/ubuntu/website/www/frontend/
+#          ln -s /home/ubuntu/website/secure/frontend/prod.env /home/ubuntu/website/www/frontend/
+#          ln -s /home/ubuntu/website/secure/frontend/nginx/auth/.htpasswd /home/ubuntu/website/www/frontend/nginx/auth/
+#          ln -s /home/ubuntu/website/data /home/ubuntu/website/www/backend/uploads/
+
+  # Clearing unused docker iamges after rebuilding
+  Clear-Docker-Images:
+    name: Clear docker images
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      # run removing script
+      - name: Clearing docker script
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.REMOTE_PORT }}
+          script: |
+            docker image rm -f $(docker images -qa)

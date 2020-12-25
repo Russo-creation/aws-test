@@ -7,6 +7,7 @@
 
 # testing
 /frontend/coverage
+/__image_snapshots__/__diff_output__
 
 # production
 /frontend/build
@@ -25,9 +26,25 @@ yarn-error.log*
 #backend
 
 # dependencies
-
 /backend/node_modules
 
-# script
-
+# script 
 ssh-agent
+
+#packet managers
+/frontend/yarn.lock
+/frontend/package-lock.json
+/backend/yarn.lock
+/backend/package-lock.json
+
+
+# ------------ uploads folder not supposed to be sored in repo. uncomment line below!!! ------------
+
+#/backend/uploads
+
+# ------------ secure elements (env, htpasswd) uncomment lines below and keep files safe!!! ------------
+
+#docker.env
+#/frontend/dev.env
+#/frontend/prod.env
+#/frontend/nginx/auth/.htpasswd

@@ -1,0 +1,1 @@
+Add to this directory all images and files that should be reflected on website

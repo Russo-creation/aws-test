@@ -14,14 +14,15 @@
 
 import puppeteer from 'puppeteer';
 
-import {globalTestFunction} from "../../testGlobalFunctions"
+import {globalTestFunction} from "../../jest/testGlobalFunctions"
 
-function sleep(millisecondsCount) {
-    if (!millisecondsCount) {
-        return;
-    }
-    return new Promise(resolve => setTimeout(resolve, millisecondsCount)).catch();
+async function applayHtpasswdCredenctials(page, user, pass){
+  const auth = Buffer.from(`${user}:${pass}`).toString('base64');
+  await page.setExtraHTTPHeaders({
+    'Authorization': `Basic ${auth}`                    
+  });
 }
+
 
 describe('image-snapshot', () => {
   globalTestFunction();
@@ -35,19 +36,28 @@ describe('image-snapshot', () => {
     page.setViewport({ width: 300, height: 768 });
   });
 
-  afterAll(async () => {
+  afterAll(async (done) => {
     await browser.close();
+
+    done();
   });
 
   it('visual regression test', async done => {
     try {
-      await page.goto(`${process.env.REACT_APP_FRONTEND_URL}/`, { waitUntil: ['load', 'domcontentloaded', 'networkidle2'], timeout: 12000 });
+      console.log(process.env.REACT_APP_FRONTEND_URL);
+      if(process.env.REACT_APP_HTPASSWD_USER && process.env.REACT_APP_HTPASSWD_PASSWORD){
+        applayHtpasswdCredenctials(page, process.env.REACT_APP_HTPASSWD_USER, process.env.REACT_APP_HTPASSWD_PASSWORD);
+      }
+      
+      await page.goto(`${process.env.REACT_APP_FRONTEND_URL}/`, { waitUntil: ['load', 'domcontentloaded', 'networkidle0', 'networkidle2'], timeout: 12000 });
+
+      //write to input id="myinput" value Hello
+      await page.type('#myinput', 'Hello');
+
+      //fix issue with non loading font in .htpasswd server
+      await page.evaluate(() => { document.body.style.fontFamily = 'Dejavu Sans'; }); 
 
       await page.evaluateHandle('document.fonts.ready').then(async() => {
-
-        //write to input id="myinput" value Hello
-        await page.type('#myinput', 'Hello');
-
         //check if page title equals React App
         //await expect(page.title()).resolves.toMatch('React App');
 
@@ -62,10 +72,10 @@ describe('image-snapshot', () => {
         await page.setViewport({ width: 300, height: bodyHeight });
   
         const image = await page.screenshot({
-          //fullPage: true,
+        //  fullPage: true,
         });
         expect(image).toMatchImageSnapshot({
-          customSnapshotsDir: "./__image_snapshots__/",
+          customSnapshotsDir: "../__image_snapshots__/",
           customSnapshotIdentifier: 'customSnapshotName',
           //  customDiffDir: "./__image_snapshots__/",
           failureThreshold: 0.005,

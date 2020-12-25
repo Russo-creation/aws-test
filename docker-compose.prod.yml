@@ -10,6 +10,8 @@ services:
       MYSQL_USER: "${MYSQL_USER}"
       MYSQL_PASSWORD: "${MYSQL_USER_PASSWORD}"
     restart: always
+    ports:
+      - "3306:3306"
     networks:
       - backend_prod
     volumes:
@@ -17,10 +19,18 @@ services:
 
   # Backend
   backend_node_prod:
-    build: ./backend
+    build:
+      context: ./backend
+      dockerfile: ./docker/prod.Dockerfile
     restart: always
+    volumes:
+      - ./backend/uploads:/usr/src/app/uploads
     environment: 
       - NODE_DATABASE_HOST=database_mysql_prod
+      - NODE_DATABASE_PORT=3306
+      - NODE_DATABASE_USER=${MYSQL_USER}
+      - NODE_DATABASE_PASS=${MYSQL_USER_PASSWORD}
+      - NODE_DATABASE_DBNAME=${MYSQL_DATABASE_NAME}
     restart: always
     ports:
       - "4008:4008"
@@ -34,26 +44,17 @@ services:
   frontend_react_prod:
     build: 
       context: ./frontend
+      dockerfile: ./docker/prod.Dockerfile
       args:
       - REACT_APP_API_URL= ${API_URL_PROD}
       - REACT_APP_FRONTEND_URL= ${FRONTEND_URL_PROD}
-    env_file: .env
     ports:
       - "80:80"
-      - "4012:9090"
+      - "443:443"
     networks:
       - frontend_prod
     depends_on:
       - backend_node_prod
-
-  # Pagecache
-  pagecache_prod:
-    image: memcached
-    ports:
-      - "11211:11211"
-    command: -m 64
-    networks:
-      - frontend_prod
 
 # Names for networks
 networks:
