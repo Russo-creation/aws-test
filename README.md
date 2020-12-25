@@ -48,4 +48,4 @@ docker-compose up -d
 More info about how to run particular service you can find in `./frontend/README.md` and `./backend/README.md`
 
 # 
-Store your backend files in `./backend/uploads/data/` directory
+Store your backend files in directory `./backend/uploads/data/` on your server
