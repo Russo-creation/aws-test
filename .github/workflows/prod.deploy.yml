@@ -61,3 +61,4 @@ jobs:
           port: ${{ secrets.REMOTE_PORT }}
           script: |
             docker image rm -f $(docker images -qa)
+            docker ps
