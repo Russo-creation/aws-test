@@ -23,6 +23,7 @@ async function applayHtpasswdCredenctials(page, user, pass){
   });
 }
 
+
 describe('image-snapshot', () => {
   globalTestFunction();
 
@@ -46,13 +47,15 @@ describe('image-snapshot', () => {
         applayHtpasswdCredenctials(page, process.env.REACT_APP_HTPASSWD_USER, process.env.REACT_APP_HTPASSWD_PASSWORD);
       }
       
-      await page.goto(`${process.env.REACT_APP_FRONTEND_URL}/`, { waitUntil: ['load', 'domcontentloaded', 'networkidle2'], timeout: 12000 });
+      await page.goto(`${process.env.REACT_APP_FRONTEND_URL}/`, { waitUntil: ['load', 'domcontentloaded', 'networkidle0', 'networkidle2'], timeout: 12000 });
+
+      //write to input id="myinput" value Hello
+      await page.type('#myinput', 'Hello');
+
+      //fix issue with non loading font in .htpasswd server
+      await page.evaluate(() => { document.body.style.fontFamily = 'sans-serif'; }); 
 
       await page.evaluateHandle('document.fonts.ready').then(async() => {
-
-        //write to input id="myinput" value Hello
-        //await page.type('#myinput', 'Hello');
-
         //check if page title equals React App
         //await expect(page.title()).resolves.toMatch('React App');
 

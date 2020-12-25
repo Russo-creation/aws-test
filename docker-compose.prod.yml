@@ -26,7 +26,7 @@ services:
     volumes:
       - ./backend/uploads:/usr/src/app/uploads
     environment: 
-      - NODE_DATABASE_HOST=database_mysql_dev
+      - NODE_DATABASE_HOST=database_mysql_prod
       - NODE_DATABASE_PORT=3306
       - NODE_DATABASE_USER=${MYSQL_USER}
       - NODE_DATABASE_PASS=${MYSQL_USER_PASSWORD}

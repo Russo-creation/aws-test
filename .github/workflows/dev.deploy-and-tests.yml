@@ -25,8 +25,8 @@ jobs:
         source: "*"
         target: /home/ubuntu/website/www/
 
-    # force build docker, run install dependencies and run E2E tests
-    - name: Rebuild docker and run E2E tests
+    # force build docker and run scripts (create symlinks)
+    - name: Rebuild docker and run scripts
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.REMOTE_HOST }}

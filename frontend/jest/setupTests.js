@@ -12,7 +12,7 @@ import { setDefaultOptions } from 'jsdom-screenshot';
 setDefaultOptions({
   launch: {
     headless: true,
-    args: ['--app', '--no-sandbox']
+    args: ['--app', '--no-sandbox', '--font-render-hinting=medium', '--enable-font-antialiasing=false',]
   }
 });
 
