@@ -34,6 +34,7 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         port: ${{ secrets.REMOTE_PORT }}
         script: |
+          docker stop $(docker ps -aq)
           cd /home/ubuntu/website/www/ && docker-compose -f docker-compose.dev.yml up -d --build --force-recreate
 
 # add below before rebuilding docker-container
