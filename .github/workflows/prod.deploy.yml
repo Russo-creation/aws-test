@@ -42,3 +42,22 @@ jobs:
 #          ln -s /home/ubuntu/website/secure/frontend/prod.env /home/ubuntu/website/www/frontend/
 #          ln -s /home/ubuntu/website/secure/frontend/nginx/auth/.htpasswd /home/ubuntu/website/www/frontend/nginx/auth/
 #          ln -s /home/ubuntu/website/data /home/ubuntu/website/www/backend/uploads/
+
+  # Clearing unused docker iamges after rebuilding
+  Clear-Docker-Images:
+    name: E2E tests
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      # install required dependencies and run E2E tests
+      - name: Clearing docker script
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.REMOTE_PORT }}
+          script: |
+            docker image rm -f $(docker images -qa)
