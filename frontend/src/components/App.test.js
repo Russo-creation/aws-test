@@ -36,8 +36,10 @@ describe('image-snapshot', () => {
     page.setViewport({ width: 300, height: 768 });
   });
 
-  afterAll(async () => {
+  afterAll(async (done) => {
     await browser.close();
+
+    done();
   });
 
   it('visual regression test', async done => {

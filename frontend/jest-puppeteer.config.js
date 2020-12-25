@@ -16,6 +16,6 @@ module.exports = {
   server: {
     command: `cross-env PORT=${port} node server`,
     port,
-    launchTimeout: 4000,
+    launchTimeout: 8000,
   },
 }
