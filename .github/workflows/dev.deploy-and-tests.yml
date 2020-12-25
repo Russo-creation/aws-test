@@ -34,12 +34,8 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         port: ${{ secrets.REMOTE_PORT }}
         script: |
-<<<<<<< HEAD
           sudo kill -9 $(sudo lsof -t -i:4444)
           docker stop $(docker ps -qa)
-=======
-          docker stop $(docker ps -aq)
->>>>>>> e1c57fe596e172dcdefbffffc4e2a9a3909cb855
           cd /home/ubuntu/website/www/ && docker-compose -f docker-compose.dev.yml up -d --build --force-recreate
           docker image rm -f $(docker images -qa)
 
